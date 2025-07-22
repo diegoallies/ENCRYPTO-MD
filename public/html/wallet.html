@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wallet | Suzero Nodes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Theme Toggle and Sidebar (same as dashboard.html) -->
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="mobile-header">
+            <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+            <h2 class="page-title">Wallet</h2>
+        </div>
+
+        <section id="wallet-section" class="content-section active">
+            <div class="wallet-balance glass">
+                <h3><i class="fas fa-wallet"></i> Your Balance</h3>
+                <p class="amount"><span id="wallet-amount">0</span> coins</p>
+                <div class="countdown-timer" id="claim-timer" style="display: none;">
+                    <i class="fas fa-clock"></i> Next claim in: 23h 59m 59s
+                </div>
+                <button id="claim-coins-btn" class="btn btn-primary">
+                    <i class="fas fa-gift"></i> Claim Daily Coins
+                </button>
+            </div>
+
+            <div class="voucher-card glass">
+                <h4><i class="fas fa-ticket-alt"></i> Redeem Voucher</h4>
+                <div class="form-group">
+                    <label for="voucher-code">Voucher Code</label>
+                    <div class="input-group">
+                        <input type="text" id="voucher-code" placeholder="Enter voucher code">
+                        <button id="redeem-voucher" class="btn btn-primary">
+                            <i class="fas fa-gift"></i> Redeem
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="send-coins glass">
+                <h4><i class="fas fa-paper-plane"></i> Send Coins</h4>
+                <div class="form-group">
+                    <label for="recipient">Recipient</label>
+                    <input type="text" id="recipient" placeholder="Username or email">
+                </div>
+                <div class="form-group">
+                    <label for="amount">Amount</label>
+                    <input type="number" id="amount" placeholder="Enter amount">
+                </div>
+                <button id="send-coins-btn" class="btn btn-primary btn-block">
+                    <i class="fas fa-paper-plane"></i> Send Coins
+                </button>
+            </div>
+
+            <div class="transactions glass">
+                <h4><i class="fas fa-history"></i> Transaction History</h4>
+                <div class="transactions-list" id="transactions-list">
+                    <div class="empty-state">
+                        <i class="fas fa-exchange-alt"></i>
+                        <p>No transactions yet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/wallet.js"></script>
+</body>
+</html>
