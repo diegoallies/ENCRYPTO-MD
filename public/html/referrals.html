@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referrals | Suzero Nodes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Theme Toggle and Sidebar (same as dashboard.html) -->
+    
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="mobile-header">
+            <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+            <h2 class="page-title">Referrals</h2>
+        </div>
+
+        <section id="referrals-section" class="content-section active">
+            <div class="referral-stats glass">
+                <div class="stat-card">
+                    <h4>Total Referrals</h4>
+                    <p id="total-referrals">0</p>
+                </div>
+                <div class="stat-card">
+                    <h4>Earned Coins</h4>
+                    <p id="earned-coins">0</p>
+                </div>
+            </div>
+
+            <div class="referral-link-card glass">
+                <h4><i class="fas fa-link"></i> Your Referral Link</h4>
+                <div class="input-group">
+                    <input type="text" id="referral-link" readonly>
+                    <button id="copy-referral" class="btn btn-primary">
+                        <i class="fas fa-copy"></i> Copy
+                    </button>
+                </div>
+                <p class="referral-info">
+                    Earn 5 coins for each friend who signs up using your link!
+                </p>
+            </div>
+
+            <div class="referral-list glass">
+                <h4><i class="fas fa-users"></i> Your Referrals</h4>
+                <div class="referrals-container" id="referrals-container">
+                    <div class="empty-state">
+                        <i class="fas fa-user-friends"></i>
+                        <p>No referrals yet</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/referrals.js"></script>
+</body>
+</html>
