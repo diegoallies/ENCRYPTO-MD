@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deployments | Suzero Nodes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar (same as dashboard.html) -->
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Mobile Header -->
+            <div class="mobile-header">
+                <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+                <h2 class="page-title">Deployments</h2>
+            </div>
+
+            <!-- Deployments Content -->
+            <section id="deployments-section" class="content-section active">
+                <div class="deployments-header">
+                    <h3><i class="fas fa-server"></i> Your Bots</h3>
+                    <button id="new-deployment-btn" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> New Deployment
+                    </button>
+                </div>
+
+                <div class="deployments-container" id="deployments-list">
+                    <div class="empty-state">
+                        <i class="fas fa-server"></i>
+                        <p>No deployments yet</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Deployment Modal -->
+            <div class="modal-overlay" id="deployment-modal">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h3>Deploy New Bot</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="deployment-form">
+                            <div class="form-group">
+                                <label for="app-name">App Name</label>
+                                <input type="text" id="app-name" required>
+                                <small class="form-hint">Must be unique across all Heroku apps</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="session-id">SESSION_ID</label>
+                                <input type="text" id="session-id" required>
+                                <small class="form-hint">Get this from the session generator</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="prefix">PREFIX</label>
+                                <input type="text" id="prefix" value=".">
+                            </div>
+                            
+                            <div class="form-footer">
+                                <div class="cost-indicator">
+                                    <i class="fas fa-coins"></i> Cost: 10 coins
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-rocket"></i> Deploy
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/deployments.js"></script>
+</body>
+</html>
