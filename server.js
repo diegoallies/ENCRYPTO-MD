@@ -59,7 +59,7 @@ app.get('/signup', (req, res) => {
 });
 
 app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public/html/logn.html'));
+    res.sendFile(path.join(__dirname, 'public/html/login.html'));
 });
 // Start server
 app.listen(PORT, () => {
