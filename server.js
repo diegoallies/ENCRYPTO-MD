@@ -26,7 +26,7 @@ app.use('/api/messages', require('./routes/messages'));
 app.use('/api/admin', require('./routes/admin'));
 
 // Serve HTML files
-app.get('/dashboard', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public/html/dashboard.html'));
 });
 
