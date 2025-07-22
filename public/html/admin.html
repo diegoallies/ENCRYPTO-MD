@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel | Suzero Nodes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Admin Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="https://i.imgur.com/JRqk1W1.png" alt="Admin" class="profile-pic">
+                <h3 class="username">Admin</h3>
+                <p class="user-email">admin@suzero.nodes</p>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active" data-section="dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</li>
+                    <li data-section="users"><i class="fas fa-users"></i> Users</li>
+                    <li data-section="deployments"><i class="fas fa-server"></i> Deployments</li>
+                    <li data-section="settings"><i class="fas fa-cog"></i> Settings</li>
+                    <li data-section="messages"><i class="fas fa-envelope"></i> Messages</li>
+                    <li id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Mobile Header -->
+            <div class="mobile-header">
+                <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+                <h2 class="page-title">Admin Dashboard</h2>
+            </div>
+
+            <!-- Admin Dashboard Content -->
+            <section id="admin-dashboard-section" class="content-section active">
+                <div class="stats-cards">
+                    <div class="card">
+                        <h3>Total Users</h3>
+                        <p id="total-users">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Active Deployments</h3>
+                        <p id="active-deployments">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Active Users</h3>
+                        <p id="active-users">0</p>
+                    </div>
+                </div>
+
+                <div class="recent-activity glass">
+                    <h3><i class="fas fa-history"></i> Recent Activity</h3>
+                    <div class="activity-list" id="activity-list">
+                        <div class="empty-state">
+                            <i class="fas fa-clock"></i>
+                            <p>No recent activity</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users Management Section -->
+            <section id="users-section" class="content-section">
+                <div class="users-header glass">
+                    <h3><i class="fas fa-users"></i> User Management</h3>
+                    <div class="search-box">
+                        <input type="text" id="user-search" placeholder="Search users...">
+                        <i class="fas fa-search"></i>
+                    </div>
+                </div>
+
+                <div class="users-table glass">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Coins</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="users-list">
+                            <tr>
+                                <td colspan="5" class="empty-state">
+                                    <i class="fas fa-users"></i>
+                                    <p>Loading users...</p>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Admin Deployments Section -->
+            <section id="deployments-section" class="content-section">
+                <div class="deployments-header glass">
+                    <h3><i class="fas fa-server"></i> All Deployments</h3>
+                    <div class="filter-options">
+                        <select id="deployment-filter">
+                            <option value="all">All</option>
+                            <option value="active">Active</option>
+                            <option value="suspended">Suspended</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="deployments-container glass" id="admin-deployments-list">
+                    <div class="empty-state">
+                        <i class="fas fa-server"></i>
+                        <p>Loading deployments...</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Settings Section -->
+            <section id="settings-section" class="content-section">
+                <div class="settings-card glass">
+                    <h3><i class="fas fa-key"></i> Heroku API Keys</h3>
+                    <div class="form-group">
+                        <label for="heroku-api-key">Primary API Key</label>
+                        <input type="text" id="heroku-api-key" placeholder="Enter Heroku API key">
+                    </div>
+                    <div class="form-group">
+                        <label for="heroku-api-key-2">Secondary API Key</label>
+                        <input type="text" id="heroku-api-key-2" placeholder="Optional secondary key">
+                    </div>
+                    <button id="save-heroku-keys" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Keys
+                    </button>
+                </div>
+
+                <div class="settings-card glass">
+                    <h3><i class="fas fa-code-branch"></i> Repository Settings</h3>
+                    <div class="form-group">
+                        <label for="repo-url">Repository URL</label>
+                        <input type="text" id="repo-url" placeholder="https://github.com/user/repo/tarball/main">
+                    </div>
+                    <button id="save-repo-settings" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+
+                <div class="settings-card glass">
+                    <h3><i class="fas fa-tools"></i> System Settings</h3>
+                    <div class="toggle-group">
+                        <label>Maintenance Mode</label>
+                        <label class="switch">
+                            <input type="checkbox" id="maintenance-mode">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="maintenance-message">Maintenance Message</label>
+                        <textarea id="maintenance-message" placeholder="Enter maintenance message"></textarea>
+                    </div>
+                    <button id="save-system-settings" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Settings
+                    </button>
+                </div>
+            </section>
+
+            <!-- Admin Messages Section -->
+            <section id="messages-section" class="content-section">
+                <div class="messages-container glass">
+                    <!-- Similar to regular messages.html but with admin capabilities -->
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+</html>
