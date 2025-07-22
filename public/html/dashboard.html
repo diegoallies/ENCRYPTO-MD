@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Suzero Nodes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <!-- Theme Toggle -->
+    <div class="theme-toggle" id="theme-toggle">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <!-- App Container -->
+    <div class="app-container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <img src="https://i.imgur.com/JRqk1W1.png" alt="Profile" class="profile-pic" id="profile-pic-preview">
+                <h3 class="username">Loading...</h3>
+                <p class="user-email">...</p>
+                <div class="coin-balance">
+                    <i class="fas fa-coins"></i>
+                    <span id="coin-count">0</span> coins
+                </div>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active" data-section="dashboard"><i class="fas fa-home"></i> Dashboard</li>
+                    <li data-section="deployments"><i class="fas fa-server"></i> Deployments</li>
+                    <li data-section="wallet"><i class="fas fa-wallet"></i> Wallet</li>
+                    <li data-section="referrals"><i class="fas fa-user-plus"></i> Referrals</li>
+                    <li data-section="messages"><i class="fas fa-envelope"></i> Messages</li>
+                    <li data-section="settings"><i class="fas fa-cog"></i> Settings</li>
+                    <li id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</li>
+                </ul>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Mobile Header -->
+            <div class="mobile-header">
+                <button class="menu-toggle" id="menu-toggle"><i class="fas fa-bars"></i></button>
+                <h2 class="page-title">Dashboard</h2>
+            </div>
+
+            <!-- Dashboard Content -->
+            <section id="dashboard-section" class="content-section active">
+                <div class="stats-cards">
+                    <div class="card">
+                        <h3>Active Bots</h3>
+                        <p id="active-bots">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Available Coins</h3>
+                        <p id="available-coins">0</p>
+                    </div>
+                    <div class="card">
+                        <h3>Referral Earnings</h3>
+                        <p id="referral-earnings">0</p>
+                    </div>
+                </div>
+
+                <div class="glass">
+                    <h3><i class="fas fa-rocket"></i> Quick Actions</h3>
+                    <div class="quick-actions">
+                        <button id="deploy-new-btn" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Deploy New Bot
+                        </button>
+                        <button id="claim-coins-btn" class="btn btn-secondary">
+                            <i class="fas fa-gift"></i> Claim Daily Coins
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass">
+                    <h3><i class="fas fa-link"></i> Your Referral Link</h3>
+                    <div class="referral-link-container">
+                        <input type="text" id="referral-link" readonly>
+                        <button id="copy-referral" class="btn btn-primary">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+                    <p class="referral-info">
+                        Earn 5 coins for each friend who signs up using your link!
+                    </p>
+                </div>
+
+                <div class="glass">
+                    <h3><i class="fas fa-server"></i> Recent Deployments</h3>
+                    <div class="deployments-list" id="recent-deployments">
+                        <div class="empty-state">
+                            <i class="fas fa-server"></i>
+                            <p>No deployments yet</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Deployment Modal -->
+    <div class="modal-overlay" id="deploy-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3>Deploy New Bot</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Deployment form will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>
