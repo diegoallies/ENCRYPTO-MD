@@ -20,22 +20,21 @@ router.post('/claim', authenticate, async (req, res) => {
             }
         }
 
-        req.user.coins += 10;
-        req.user.lastClaim = now;
-        await req.user.save();
+        const newCoins = req.user.coins + 10;
+        await User.update(req.user.id, { coins: newCoins, lastClaim: now });
 
         // Record transaction
-        const transaction = new Transaction({
-            userId: req.user._id,
+        await Transaction.create({
+            userId: req.user.id,
             type: 'credit',
             amount: 10,
             description: 'Daily claim'
         });
-        await transaction.save();
 
-        res.json({ coins: req.user.coins });
+        res.json({ coins: newCoins });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Claim error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
@@ -49,57 +48,51 @@ router.post('/send', authenticate, async (req, res) => {
         }
 
         const recipientUser = await User.findOne({ 
-            $or: [{ username: recipient }, { email: recipient }],
-            _id: { $ne: req.user._id }
+            $or: [{ username: recipient }, { email: recipient }]
         });
 
-        if (!recipientUser) {
+        if (!recipientUser || recipientUser.id === req.user.id) {
             return res.status(404).json({ error: 'Recipient not found' });
         }
 
         // Perform transaction
-        req.user.coins -= amount;
-        recipientUser.coins += amount;
-
-        await Promise.all([req.user.save(), recipientUser.save()]);
+        await User.update(req.user.id, { coins: req.user.coins - amount });
+        await User.update(recipientUser.id, { coins: recipientUser.coins + amount });
 
         // Record transactions
-        const debitTransaction = new Transaction({
-            userId: req.user._id,
+        await Transaction.create({
+            userId: req.user.id,
             type: 'debit',
             amount,
-            description: `Sent to ${recipientUser.username}`,
-            relatedUser: recipientUser._id
+            description: `Sent to ${recipientUser.username}`
         });
 
-        const creditTransaction = new Transaction({
-            userId: recipientUser._id,
+        await Transaction.create({
+            userId: recipientUser.id,
             type: 'credit',
             amount,
-            description: `Received from ${req.user.username}`,
-            relatedUser: req.user._id
+            description: `Received from ${req.user.username}`
         });
 
-        await Promise.all([debitTransaction.save(), creditTransaction.save()]);
-
+        const updatedUser = await User.findById(req.user.id);
         res.json({ 
-            coins: req.user.coins,
+            coins: updatedUser.coins,
             message: `Successfully sent ${amount} coins to ${recipientUser.username}`
         });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Send coins error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
 // Get transactions
 router.get('/transactions', authenticate, async (req, res) => {
     try {
-        const transactions = await Transaction.find({ userId: req.user._id })
-            .sort({ createdAt: -1 })
-            .limit(50);
-        res.json(transactions);
+        const transactions = await Transaction.find({ userId: req.user.id });
+        res.json(transactions.slice(0, 50)); // Limit to 50
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Get transactions error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
