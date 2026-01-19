@@ -11,6 +11,9 @@ const authenticate = async (req, res, next) => {
         if (!req.user) return res.status(401).json({ error: 'User not found' });
         if (req.user.isBanned) return res.status(403).json({ error: 'Account suspended' });
         
+        // Refresh user data from DB
+        req.user = await User.findById(req.user.id);
+        
         next();
     } catch (err) {
         res.status(400).json({ error: 'Invalid token' });

@@ -27,7 +27,8 @@ router.post('/login', async (req, res) => {
             } 
         });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Login error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
@@ -41,19 +42,21 @@ router.post('/signup', async (req, res) => {
             return res.status(400).json({ error: 'Username or email already exists' });
         }
 
-        const user = new User({ username, email, password });
+        const userData = { username, email, password };
         
         if (referralCode) {
             const referrer = await User.findOne({ username: referralCode });
             if (referrer) {
-                user.referredBy = referralCode;
-                referrer.referrals.push(username);
-                referrer.coins += 5;
-                await referrer.save();
+                userData.referredBy = referralCode;
+                // Add referral record
+                const Referral = require('../models/Referral');
+                await Referral.create({ user_id: referrer.id, referred_username: username });
+                // Update referrer coins
+                await User.update(referrer.id, { coins: referrer.coins + 5 });
             }
         }
 
-        await user.save();
+        const user = await User.create(userData);
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET || 'suzero_secret', { expiresIn: '7d' });
 
         res.status(201).json({ 
@@ -67,7 +70,8 @@ router.post('/signup', async (req, res) => {
             } 
         });
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Signup error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 

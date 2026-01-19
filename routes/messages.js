@@ -2,77 +2,72 @@ const express = require('express');
 const router = express.Router();
 const { authenticate } = require('../middleware/auth');
 const Message = require('../models/Message');
-const User = require('../models/User');
+const { pool } = require('../config/db');
 
 // Send message
 router.post('/', authenticate, async (req, res) => {
     try {
-        const { content, receiverId } = req.body;
+        const { content, receiverId, subject } = req.body;
         
-        const message = new Message({
-            sender: req.user._id,
-            receiver: receiverId,
-            content,
-            isAdminMessage: req.user.role === 'admin'
+        const message = await Message.create({
+            user_id: req.user.id,
+            message: content,
+            subject: subject || 'Message'
         });
 
-        await message.save();
         res.json(message);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Send message error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
 // Get messages
 router.get('/', authenticate, async (req, res) => {
     try {
-        let query;
+        let messages;
         
         if (req.user.role === 'admin') {
-            query = {
-                $or: [
-                    { receiver: null },
-                    { receiver: req.user._id },
-                    { sender: req.user._id }
-                ]
-            };
+            // Admin can see all messages
+            messages = await Message.find();
         } else {
-            query = {
-                $or: [
-                    { sender: req.user._id },
-                    { receiver: req.user._id }
-                ]
-            };
+            // Users see only their messages
+            messages = await Message.find({ user_id: req.user.id });
         }
 
-        const messages = await Message.find(query)
-            .populate('sender', 'username profilePic')
-            .populate('receiver', 'username profilePic')
-            .sort({ createdAt: -1 })
-            .limit(50);
+        // Get user info for each message
+        const messagesWithUsers = await Promise.all(messages.map(async (msg) => {
+            const user = await require('../models/User').findById(msg.user_id);
+            return {
+                ...msg,
+                sender: user ? {
+                    username: user.username,
+                    profilePic: user.profilePic
+                } : null
+            };
+        }));
 
-        res.json(messages);
+        res.json(messagesWithUsers.slice(0, 50)); // Limit to 50
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Get messages error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 
 // Mark as read
 router.put('/:id/read', authenticate, async (req, res) => {
     try {
-        const message = await Message.findOneAndUpdate(
-            { _id: req.params.id, receiver: req.user._id },
-            { isRead: true },
-            { new: true }
-        );
-
-        if (!message) {
+        const message = await Message.findOne({ id: req.params.id });
+        
+        if (!message || (req.user.role !== 'admin' && message.user_id !== req.user.id)) {
             return res.status(404).json({ error: 'Message not found' });
         }
 
-        res.json(message);
+        const updatedMessage = await Message.update(req.params.id, { is_read: true });
+        res.json(updatedMessage);
     } catch (error) {
-        res.status(500).json({ error: 'Internal server error' });
+        console.error('Mark read error:', error);
+        res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 });
 

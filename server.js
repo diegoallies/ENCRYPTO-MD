@@ -1,6 +1,5 @@
 require('dotenv').config();
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
 const cors = require('cors');
 
@@ -13,7 +12,8 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Database Connection
-require('./config/db');
+const { connectDB } = require('./config/db');
+connectDB();
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
